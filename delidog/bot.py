@@ -1,6 +1,6 @@
 import telebot
 from delidog import settings
-from delidog.models import Chat
+from delidog.models import Chat, Message
 
 
 bot = telebot.TeleBot(settings.BOT_TOKEN)
@@ -15,6 +15,11 @@ def _send_token(message):
 def send_message(chat, text, disable_notification=False):
     bot.send_message(
         chat.id, text, disable_notification=disable_notification)
+    Message.add_message(
+        chat,
+        text,
+        disable_notification
+    )
 
 
 def polling():

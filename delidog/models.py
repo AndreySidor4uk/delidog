@@ -1,3 +1,4 @@
+import datetime
 import peewee as pw
 from delidog.db import BaseModel, db
 from delidog.utils import get_token
@@ -7,6 +8,7 @@ def create_tables():
     with db:
         tables = [
             Chat,
+            Message,
         ]
 
         db.create_tables(tables)
@@ -45,3 +47,29 @@ class Chat(BaseModel):
     @classmethod
     def get_chat_by_token(cls, token):
         return Chat.get(Chat.token == token)
+
+
+class Message(BaseModel):
+    created = pw.DateTimeField(default=datetime.datetime.now)
+    chat = pw.ForeignKeyField(
+        Chat,
+        backref='messages',
+        on_delete='CASCADE'
+    )
+    text = pw.TextField()
+    disable_notification = pw.BooleanField(default=False)
+
+    class Meta:
+        table_name = 'messages'
+
+    @classmethod
+    def add_message(cls,
+                    chat: Chat,
+                    text: str,
+                    disable_notification: bool = False):
+        
+        message = Message(chat=chat,
+                          text=text,
+                          disable_notification=disable_notification
+                          )
+        message.save()
