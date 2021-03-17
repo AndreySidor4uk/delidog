@@ -51,8 +51,8 @@ class Resource(object):
     def on_post(self, req: falcon.Request, resp: falcon.Response):
         for message in req.media:
             send_message(
-                Chat.get_chat_by_token(message.token),
-                message.text,
-                message.disable_notification
+                Chat.get_chat_by_token(message.get('token')),
+                message.get('text'),
+                message.get('disable_notification')
             )
         resp.status = falcon.HTTP_200
