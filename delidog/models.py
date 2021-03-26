@@ -40,6 +40,14 @@ class Chat(BaseModel):
         return chat
 
     @classmethod
+    def set_token(cls, id: int, token: str) -> str:
+        chat = Chat.get_chat(id=id)
+        chat.token = token
+        chat.save()
+
+        return chat
+
+    @classmethod
     def get_token(cls, id: int) -> str:
         chat = Chat.get_chat(id=id)
         return chat.token
@@ -67,7 +75,7 @@ class Message(BaseModel):
                     chat: Chat,
                     text: str,
                     disable_notification: bool = False):
-        
+
         message = Message(chat=chat,
                           text=text,
                           disable_notification=disable_notification
