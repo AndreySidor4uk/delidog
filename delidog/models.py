@@ -53,8 +53,8 @@ class Chat(BaseModel):
         return chat.token
 
     @classmethod
-    def get_chat_by_token(cls, token):
-        return Chat.get(Chat.token == token)
+    def get_chats_by_token(cls, token):
+        return list(Chat.select().where(Chat.token == token))
 
 
 class Message(BaseModel):
@@ -70,7 +70,7 @@ class Message(BaseModel):
     class Meta:
         table_name = 'messages'
 
-    @classmethod
+    @ classmethod
     def add_message(cls,
                     chat: Chat,
                     text: str,

@@ -35,7 +35,7 @@ def test_get_token():
     assert len(token) == 32
 
 
-def test_get_chat_by_token(chat):
-    obj = Chat.get_chat_by_token(chat.token)
+def test_get_chats_by_token(chat):
+    obj = Chat.get_chats_by_token(chat.token)
 
-    assert chat == obj
+    assert chat in obj

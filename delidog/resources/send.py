@@ -39,20 +39,24 @@ class Resource(object):
         disable_notification = req.params.get(
             'disable_notification', False)
 
-        send_message(
-            Chat.get_chat_by_token(token),
-            text,
-            disable_notification
-        )
+        chats = Chat.get_chats_by_token(token)
+        for chat in chats:
+            send_message(
+                chat,
+                text,
+                disable_notification
+            )
 
         resp.status = falcon.HTTP_200
 
     @jsonschema.validate(json_schema)
     def on_post(self, req: falcon.Request, resp: falcon.Response):
         for message in req.media:
-            send_message(
-                Chat.get_chat_by_token(message.get('token')),
-                message.get('text'),
-                message.get('disable_notification')
-            )
+            chats = Chat.get_chats_by_token(message.get('token'))
+            for chat in chats:
+                send_message(
+                    chat,
+                    message.get('text'),
+                    message.get('disable_notification')
+                )
         resp.status = falcon.HTTP_200
