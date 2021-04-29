@@ -26,7 +26,7 @@ def _set_token(message):
 
 def send_message(chat, text, disable_notification=False):
     bot.send_message(
-        chat.id, text, disable_notification=disable_notification)
+        chat.id, text, disable_notification=disable_notification, timeout=5)
     Message.add_message(
         chat,
         text,
